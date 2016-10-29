@@ -1,3 +1,1 @@
-document.write(process.versions.node)
-document.write(process.versions.chrome)
-document.write(process.versions.electron)
+const engine = require('./src/engine');
