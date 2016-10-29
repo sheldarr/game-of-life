@@ -2,13 +2,12 @@
   "name": "game-of-life",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-  },
+  "main": "main.js",
+  "scripts": {},
   "author": "Kewin Polok",
   "license": "MIT",
-  "devDependencies": {
-  },
+  "devDependencies": {},
   "dependencies": {
+    "electron": "^1.4.4"
   }
 }
