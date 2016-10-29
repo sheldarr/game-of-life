@@ -7,16 +7,27 @@ const board = [];
 const boardVisualisation = new PIXI.Graphics();
 let iteration = 0;
 
+const initializeBoard = function (board) {
+    for(let y = 0; y < world.height; y++) {
+        let row = []
+        for(let x = 0; x < world.width; x++) {
+            row.push(0);
+        }
+
+        board.push(row);
+    }
+}
+
 const nextInteration = function () {
     for(let y = 0; y < world.height; y++) {
         let row = []
         for(let x = 0; x < world.width; x++) {
-            if(Math.random() < 0.5) {
-            row.push(0);
+            if(Math.random() < 0.10) {
+            board[x][y] = 1;
             continue;
             }
 
-            row.push(1);
+            board[x][y] = 0;
         }
 
         board.push(row);
@@ -24,7 +35,7 @@ const nextInteration = function () {
 
     for(let y = 0; y < world.height; y++) {
         for(let x = 0; x < world.width; x++) {
-            let colour = board[x][y] ? 0x008000 : 0xFF0000;
+            let colour = board[x][y] ? 0x008000 : 0x000000;
             boardVisualisation.lineStyle(1, colour, 1);
             boardVisualisation.moveTo(x, y);
             boardVisualisation.lineTo(x+1, y+1);
@@ -36,6 +47,7 @@ const nextInteration = function () {
     iteration += 1;
 }
 
+initializeBoard(board);
 nextInteration();
 
 const renderer = PIXI.autoDetectRenderer(world.width, world.height);
@@ -54,7 +66,8 @@ var message = new PIXI.Text(
 stage.addChild(message);
 
 window.setInterval(function () {
+    boardVisualisation.clear();
     message.text = iteration;
     nextInteration();
     renderer.render(stage);
-}, 1000);
+}, 500);
