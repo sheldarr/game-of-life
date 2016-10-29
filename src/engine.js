@@ -18,7 +18,7 @@ const initializeBoard = function (board) {
     }
 }
 
-const nextInteration = function () {
+const randomizeBoard = function (board) {
     for(let y = 0; y < world.height; y++) {
         let row = []
         for(let x = 0; x < world.width; x++) {
@@ -32,6 +32,15 @@ const nextInteration = function () {
 
         board.push(row);
     }
+}
+
+const nextInteration = function () {
+
+    iteration += 1;
+}
+
+const drawBoard = function (boardVisualisation) {
+    boardVisualisation.clear();
 
     for(let y = 0; y < world.height; y++) {
         for(let x = 0; x < world.width; x++) {
@@ -43,12 +52,9 @@ const nextInteration = function () {
             boardVisualisation.y = 0;
         }
     }
-
-    iteration += 1;
-}
+};
 
 initializeBoard(board);
-nextInteration();
 
 const renderer = PIXI.autoDetectRenderer(world.width, world.height);
 
@@ -66,8 +72,9 @@ var message = new PIXI.Text(
 stage.addChild(message);
 
 window.setInterval(function () {
-    boardVisualisation.clear();
     message.text = iteration;
+    randomizeBoard(board);
+    drawBoard(boardVisualisation);
     nextInteration();
     renderer.render(stage);
 }, 500);
