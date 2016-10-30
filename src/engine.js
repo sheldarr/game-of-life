@@ -1,6 +1,6 @@
 const world = {
-    width: 256,
-    height: 256,
+    width: 128,
+    height: 128,
 }
 
 const board = [];
@@ -34,7 +34,46 @@ const randomizeBoard = function (board) {
     }
 }
 
+const countNeighbors = function (board, position) {
+    var neighbors = 0;
+
+    let leftLimit = position.x === 0 ? position.x : position.x - 1;
+    let rightLimit = position.x === world.width ? world.width : position.x + 1;
+    let upLimit = position.y === 0 ? position.y : position.y - 1;
+    let downLimit = position.y === world.height ? world.height : position.y + 1;
+
+    for(let y = upLimit; y <= downLimit; y++) {
+        for(let x = leftLimit; x <= rightLimit; x++) {
+            if(x === position.x && y === position.y) {
+                continue;
+            }
+            
+            if(board[x][y]) {
+                neighbors +=1;
+            }
+        }
+    }
+
+    return neighbors;
+}
+
 const nextInteration = function () {
+    var previousIterationBoard = JSON.parse(JSON.stringify(board));
+
+    for(let y = 0; y < world.height; y++) {
+        for(let x = 0; x < world.width; x++) {
+            let neighbors = countNeighbors(board, {x: x, y: y});
+
+            if(!previousIterationBoard[x][y] && neighbors === 3) {
+                 board[x][y] = 1;
+                 continue;
+            }
+
+            if(previousIterationBoard[x][y] && (neighbors < 2 || neighbors > 3)) {
+                 board[x][y] = 0;
+            }
+        }
+    }
 
     iteration += 1;
 }
@@ -55,6 +94,7 @@ const drawBoard = function (boardVisualisation) {
 };
 
 initializeBoard(board);
+randomizeBoard(board);
 
 const renderer = PIXI.autoDetectRenderer(world.width, world.height);
 
@@ -71,10 +111,12 @@ var message = new PIXI.Text(
 
 stage.addChild(message);
 
+drawBoard(boardVisualisation);
+renderer.render(stage);
+
 window.setInterval(function () {
-    message.text = iteration;
-    randomizeBoard(board);
-    drawBoard(boardVisualisation);
     nextInteration();
+    message.text = iteration;
+    drawBoard(boardVisualisation);
     renderer.render(stage);
-}, 500);
+}, 1000);
