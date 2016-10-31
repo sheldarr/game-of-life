@@ -1,7 +1,19 @@
+const nconf = require('nconf');
+
+nconf.argv()
+ .env()
+ .file({ file: './config/default.json' });
+
+console.log(window.innerWidth);
+
 const world = {
-    width: 128,
-    height: 128,
+    width: nconf.get("world:useWindowSize") ? window.innerWidth : nconf.get("world:width"),
+    height: nconf.get("world:useWindowSize") ? window.innerHeight : nconf.get("world:height"),
+    useWindowSize: nconf.get("world:useWindowSize"),
+    chanceOfLife: nconf.get("world:chanceOfLife")
 }
+
+console.log(world);
 
 const board = [];
 const boardVisualisation = new PIXI.Graphics();
@@ -16,13 +28,15 @@ const initializeBoard = function (board) {
 
         board.push(row);
     }
+
+    console.log(board);
 }
 
 const randomizeBoard = function (board) {
     for(let y = 0; y < world.height; y++) {
         let row = []
         for(let x = 0; x < world.width; x++) {
-            if(Math.random() < 0.10) {
+            if(Math.random() < world.chanceOfLife) {
             board[x][y] = 1;
             continue;
             }
@@ -47,7 +61,7 @@ const countNeighbors = function (board, position) {
             if(x === position.x && y === position.y) {
                 continue;
             }
-            
+
             if(board[x][y]) {
                 neighbors +=1;
             }

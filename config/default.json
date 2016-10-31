@@ -1,0 +1,8 @@
+{
+    "world": {
+        "width": 256,
+        "height": 256,
+        "useWindowSize": false,
+        "chanceOfLife": 0.1
+    }
+}

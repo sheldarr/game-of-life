@@ -3,11 +3,14 @@
   "version": "0.1.0",
   "description": "",
   "main": "main.js",
-  "scripts": {},
+  "scripts": {
+      "start": "electron ."
+  },
   "author": "Kewin Polok",
   "license": "MIT",
   "devDependencies": {},
   "dependencies": {
-    "electron": "^1.4.4"
+    "electron": "^1.4.4",
+    "nconf": "^0.8.4"
   }
 }
